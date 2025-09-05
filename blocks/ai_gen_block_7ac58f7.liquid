@@ -1,0 +1,438 @@
+{% doc %}
+  @prompt
+    I want to build a 3 by 3 grid of product categories represented by icons. The product categories are heart health, general health, sleep, brain health, weight, sexual health, allergy, performance, and energy.
+
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-category-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: {{ block.settings.grid_gap }}px;
+    padding: {{ block.settings.section_padding }}px;
+    max-width: {{ block.settings.max_width }}px;
+    margin: 0 auto;
+  }
+
+  .ai-category-item-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: {{ block.settings.item_padding }}px;
+    background-color: {{ block.settings.item_background }};
+    border-radius: {{ block.settings.border_radius }}px;
+    text-decoration: none;
+    color: {{ block.settings.text_color }};
+    transition: all 0.3s ease;
+    border: {{ block.settings.border_width }}px solid {{ block.settings.border_color }};
+    min-height: {{ block.settings.item_height }}px;
+  }
+
+  .ai-category-item-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.item_hover_background }};
+    color: {{ block.settings.text_hover_color }};
+    transform: translateY(-{{ block.settings.hover_lift }}px);
+    box-shadow: 0 {{ block.settings.hover_lift | times: 2 }}px {{ block.settings.hover_lift | times: 4 }}px rgba(0, 0, 0, 0.1);
+  }
+
+  .ai-category-icon-{{ ai_gen_id }} {
+    width: {{ block.settings.icon_size }}px;
+    height: {{ block.settings.icon_size }}px;
+    margin-bottom: {{ block.settings.icon_margin }}px;
+    color: {{ block.settings.icon_color }};
+    transition: color 0.3s ease;
+  }
+
+  .ai-category-item-{{ ai_gen_id }}:hover .ai-category-icon-{{ ai_gen_id }} {
+    color: {{ block.settings.icon_hover_color }};
+  }
+
+  .ai-category-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    font-weight: {{ block.settings.title_weight }};
+    text-align: center;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-category-grid-{{ ai_gen_id }} {
+      grid-template-columns: repeat({{ block.settings.columns_mobile }}, 1fr);
+      gap: {{ block.settings.grid_gap | times: 0.75 }}px;
+      padding: {{ block.settings.section_padding | times: 0.75 }}px;
+    }
+
+    .ai-category-item-{{ ai_gen_id }} {
+      padding: {{ block.settings.item_padding | times: 0.75 }}px;
+      min-height: {{ block.settings.item_height | times: 0.85 }}px;
+    }
+
+    .ai-category-icon-{{ ai_gen_id }} {
+      width: {{ block.settings.icon_size | times: 0.85 }}px;
+      height: {{ block.settings.icon_size | times: 0.85 }}px;
+    }
+
+    .ai-category-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.9 }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-category-grid-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <a href="{{ block.settings.heart_health_link }}" class="ai-category-item-{{ ai_gen_id }}">
+    <div class="ai-category-icon-{{ ai_gen_id }}">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+      </svg>
+    </div>
+    <h3 class="ai-category-title-{{ ai_gen_id }}">Heart Health</h3>
+  </a>
+
+  <a href="{{ block.settings.general_health_link }}" class="ai-category-item-{{ ai_gen_id }}">
+    <div class="ai-category-icon-{{ ai_gen_id }}">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+      </svg>
+    </div>
+    <h3 class="ai-category-title-{{ ai_gen_id }}">General Health</h3>
+  </a>
+
+  <a href="{{ block.settings.sleep_link }}" class="ai-category-item-{{ ai_gen_id }}">
+    <div class="ai-category-icon-{{ ai_gen_id }}">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.75 4.09L15.22 6.03L16.13 9.09L13.5 7.28L10.87 9.09L11.78 6.03L9.25 4.09L12.44 4L13.5 1L14.56 4L17.75 4.09ZM21.25 11L19.61 12.25L20.2 14.23L18.5 13.06L16.8 14.23L17.39 12.25L15.75 11L17.81 10.95L18.5 9L19.19 10.95L21.25 11ZM18.97 15.95C19.8 15.87 20.69 17.05 20.16 17.8C19.84 18.25 19.5 18.67 19.08 19.07C15.17 23 8.84 23 4.94 19.07C1.03 15.17 1.03 8.83 4.94 4.93C5.34 4.53 5.76 4.17 6.21 3.85C6.96 3.32 8.14 4.21 8.06 5.04C7.79 7.9 8.75 10.87 10.95 13.06C13.14 15.26 16.1 16.22 18.97 15.95Z"/>
+      </svg>
+    </div>
+    <h3 class="ai-category-title-{{ ai_gen_id }}">Sleep</h3>
+  </a>
+
+  <a href="{{ block.settings.brain_health_link }}" class="ai-category-item-{{ ai_gen_id }}">
+    <div class="ai-category-icon-{{ ai_gen_id }}">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M21.33 12.91C21.42 14.46 20.71 15.95 19.44 16.86L20.21 18.35C20.44 18.8 20.47 19.33 20.27 19.8C20.08 20.27 19.69 20.64 19.21 20.8L18.42 21.05C18.25 21.11 18.06 21.14 17.88 21.14C17.37 21.14 16.89 20.91 16.56 20.5L14.44 18C13.55 17.85 12.71 17.47 12 16.9C11.5 17.05 11 17.13 10.5 17.13C9.62 17.13 8.74 16.86 8 16.35C7.59 16.75 7.12 17.05 6.61 17.22L5.61 17.53C5.13 17.69 4.61 17.59 4.21 17.26C3.81 16.93 3.59 16.41 3.61 15.87L3.65 14.83C3.67 14.5 3.75 14.18 3.88 13.88C4.15 13.25 4.73 12.79 5.42 12.67L6.2 12.5C6.5 12.45 6.8 12.5 7.07 12.64C7.34 12.78 7.55 13 7.67 13.27L8.17 14.5C8.5 14.5 8.83 14.43 9.13 14.29C9.86 13.96 10.44 13.37 10.75 12.64L11.08 11.88C11.3 11.33 11.72 10.9 12.25 10.67C12.78 10.44 13.38 10.44 13.91 10.67L14.58 11C15.25 11.33 15.75 11.92 15.92 12.64C16.08 13.36 15.89 14.11 15.42 14.67L14.83 15.33C15.83 15.5 16.75 15.92 17.5 16.5L18.67 17.83C19.17 17.33 19.5 16.67 19.58 15.95C19.67 15.05 19.38 14.15 18.79 13.5C18.68 13.37 18.56 13.25 18.42 13.17L17.5 12.5C17.33 12.38 17.21 12.21 17.17 12.02C17.13 11.83 17.17 11.63 17.29 11.46L18.04 10.46C18.25 10.17 18.58 10 18.92 10C19.26 10 19.58 10.17 19.79 10.46L20.54 11.46C20.96 12.04 21.25 12.46 21.33 12.91ZM9.5 10.5C9.5 9.67 8.83 9 8 9S6.5 9.67 6.5 10.5 7.17 12 8 12 9.5 11.33 9.5 10.5ZM16 9C15.17 9 14.5 9.67 14.5 10.5S15.17 12 16 12 17.5 11.33 17.5 10.5 16.83 9 16 9Z"/>
+      </svg>
+    </div>
+    <h3 class="ai-category-title-{{ ai_gen_id }}">Brain Health</h3>
+  </a>
+
+  <a href="{{ block.settings.weight_link }}" class="ai-category-item-{{ ai_gen_id }}">
+    <div class="ai-category-icon-{{ ai_gen_id }}">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 3C9.79 3 8 4.79 8 7C8 9.21 9.79 11 12 11C14.21 11 16 9.21 16 7C16 4.79 14.21 3 12 3ZM12 9C10.9 9 10 8.1 10 7C10 5.9 10.9 5 12 5C13.1 5 14 5.9 14 7C14 8.1 13.1 9 12 9ZM21 9V7L19 8L21 9ZM3 9L5 8L3 7V9ZM19.14 12.94C18.95 12.73 18.68 12.61 18.4 12.61C18.17 12.61 17.95 12.7 17.79 12.86L12 18.65L6.21 12.86C6.05 12.7 5.83 12.61 5.6 12.61C5.32 12.61 5.05 12.73 4.86 12.94C4.68 13.15 4.6 13.43 4.65 13.71L5.93 20.96C6.03 21.54 6.54 21.96 7.13 21.96H16.87C17.46 21.96 17.97 21.54 18.07 20.96L19.35 13.71C19.4 13.43 19.32 13.15 19.14 12.94Z"/>
+      </svg>
+    </div>
+    <h3 class="ai-category-title-{{ ai_gen_id }}">Weight</h3>
+  </a>
+
+  <a href="{{ block.settings.sexual_health_link }}" class="ai-category-item-{{ ai_gen_id }}">
+    <div class="ai-category-icon-{{ ai_gen_id }}">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L19 8L21 9ZM3 9L5 8L3 7V9ZM9.5 7.5C9.5 8.3 10.2 9 11 9S12.5 8.3 12.5 7.5 11.8 6 11 6 9.5 6.7 9.5 7.5ZM11.5 7.5C11.5 8.3 12.2 9 13 9S14.5 8.3 14.5 7.5 13.8 6 13 6 11.5 6.7 11.5 7.5ZM5.5 12C5.5 13.38 6.62 14.5 8 14.5S10.5 13.38 10.5 12 9.38 9.5 8 9.5 5.5 10.62 5.5 12ZM13.5 12C13.5 13.38 14.62 14.5 16 14.5S18.5 13.38 18.5 12 17.38 9.5 16 9.5 13.5 10.62 13.5 12ZM12 22C17.5 22 22 17.5 22 12S17.5 2 12 2 2 6.5 2 12 6.5 22 12 22ZM12 20C7.59 20 4 16.41 4 12S7.59 4 12 4 20 7.59 20 12 16.41 20 12 20Z"/>
+      </svg>
+    </div>
+    <h3 class="ai-category-title-{{ ai_gen_id }}">Sexual Health</h3>
+  </a>
+
+  <a href="{{ block.settings.allergy_link }}" class="ai-category-item-{{ ai_gen_id }}">
+    <div class="ai-category-icon-{{ ai_gen_id }}">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2ZM12 6.5L11.5 8.5L9.5 9L11.5 9.5L12 11.5L12.5 9.5L14.5 9L12.5 8.5L12 6.5ZM19.5 3.5L20.5 6.5L23.5 7.5L20.5 8.5L19.5 11.5L18.5 8.5L15.5 7.5L18.5 6.5L19.5 3.5ZM19.5 15.5L20.5 18.5L23.5 19.5L20.5 20.5L19.5 23.5L18.5 20.5L15.5 19.5L18.5 18.5L19.5 15.5ZM4.5 10.5L5.5 13.5L8.5 14.5L5.5 15.5L4.5 18.5L3.5 15.5L0.5 14.5L3.5 13.5L4.5 10.5Z"/>
+      </svg>
+    </div>
+    <h3 class="ai-category-title-{{ ai_gen_id }}">Allergy</h3>
+  </a>
+
+  <a href="{{ block.settings.performance_link }}" class="ai-category-item-{{ ai_gen_id }}">
+    <div class="ai-category-icon-{{ ai_gen_id }}">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M13.5 0.67S14.25 0.33 15 0.33S16.5 0.67 16.5 0.67L15.97 2.95L17.25 4.5L15.81 5.25L16.5 7.34L15 6.67S14.25 7 13.5 6.67L14.19 4.58L12.75 3.83L14.03 2.28L13.5 0.67ZM9.5 3C10.6 3 11.5 3.9 11.5 5S10.6 7 9.5 7 7.5 6.1 7.5 5 8.4 3 9.5 3ZM6.5 7.5C7.6 7.5 8.5 8.4 8.5 9.5S7.6 11.5 6.5 11.5 4.5 10.6 4.5 9.5 5.4 7.5 6.5 7.5ZM11.5 9C12.6 9 13.5 9.9 13.5 11S12.6 13 11.5 13 9.5 12.1 9.5 11 10.4 9 11.5 9ZM3 12.5C4.1 12.5 5 13.4 5 14.5S4.1 16.5 3 16.5 1 15.6 1 14.5 1.9 12.5 3 12.5ZM7.5 14.5C8.6 14.5 9.5 15.4 9.5 16.5S8.6 18.5 7.5 18.5 5.5 17.6 5.5 16.5 6.4 14.5 7.5 14.5ZM18 9.5C19.1 9.5 20 10.4 20 11.5S19.1 13.5 18 13.5 16 12.6 16 11.5 16.9 9.5 18 9.5ZM15.5 14C16.6 14 17.5 14.9 17.5 16S16.6 18 15.5 18 13.5 17.1 13.5 16 14.4 14 15.5 14ZM21 15.5C22.1 15.5 23 16.4 23 17.5S22.1 19.5 21 19.5 19 18.6 19 17.5 19.9 15.5 21 15.5ZM12 18.5C13.1 18.5 14 19.4 14 20.5S13.1 22.5 12 22.5 10 21.6 10 20.5 10.9 18.5 12 18.5Z"/>
+      </svg>
+    </div>
+    <h3 class="ai-category-title-{{ ai_gen_id }}">Performance</h3>
+  </a>
+
+  <a href="{{ block.settings.energy_link }}" class="ai-category-item-{{ ai_gen_id }}">
+    <div class="ai-category-icon-{{ ai_gen_id }}">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M7 2V13H10V22L17 10H13L17 2H7Z"/>
+      </svg>
+    </div>
+    <h3 class="ai-category-title-{{ ai_gen_id }}">Energy</h3>
+  </a>
+</div>
+
+{% schema %}
+{
+  "name": "Product category grid",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 400,
+      "max": 1200,
+      "step": 50,
+      "unit": "px",
+      "label": "Maximum width",
+      "default": 800
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Section padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "min": 8,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Grid gap",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns on mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "header",
+      "content": "Item style"
+    },
+    {
+      "type": "range",
+      "id": "item_height",
+      "min": 80,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Item height",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "item_padding",
+      "min": 8,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Item padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "label": "Border width",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "hover_lift",
+      "min": 0,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "label": "Hover lift effect",
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "item_background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "item_hover_background",
+      "label": "Hover background",
+      "default": "#f8f9fa"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border",
+      "default": "#e9ecef"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#212529"
+    },
+    {
+      "type": "color",
+      "id": "text_hover_color",
+      "label": "Text hover",
+      "default": "#212529"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon",
+      "default": "#6c757d"
+    },
+    {
+      "type": "color",
+      "id": "icon_hover_color",
+      "label": "Icon hover",
+      "default": "#495057"
+    },
+    {
+      "type": "header",
+      "content": "Icon settings"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "min": 24,
+      "max": 64,
+      "step": 4,
+      "unit": "px",
+      "label": "Icon size",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "icon_margin",
+      "min": 4,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Icon bottom margin",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Title size",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Title weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "header",
+      "content": "Links"
+    },
+    {
+      "type": "url",
+      "id": "heart_health_link",
+      "label": "Heart health link"
+    },
+    {
+      "type": "url",
+      "id": "general_health_link",
+      "label": "General health link"
+    },
+    {
+      "type": "url",
+      "id": "sleep_link",
+      "label": "Sleep link"
+    },
+    {
+      "type": "url",
+      "id": "brain_health_link",
+      "label": "Brain health link"
+    },
+    {
+      "type": "url",
+      "id": "weight_link",
+      "label": "Weight link"
+    },
+    {
+      "type": "url",
+      "id": "sexual_health_link",
+      "label": "Sexual health link"
+    },
+    {
+      "type": "url",
+      "id": "allergy_link",
+      "label": "Allergy link"
+    },
+    {
+      "type": "url",
+      "id": "performance_link",
+      "label": "Performance link"
+    },
+    {
+      "type": "url",
+      "id": "energy_link",
+      "label": "Energy link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product category grid"
+    }
+  ]
+}
+{% endschema %}
