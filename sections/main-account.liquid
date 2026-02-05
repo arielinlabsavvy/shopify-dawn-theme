@@ -44,6 +44,7 @@
                   {{ 'customer.orders.fulfillment_status' | t }}
                 </th>
                 <th id="ColumnTotal" scope="col" role="columnheader">{{ 'customer.orders.total' | t }}</th>
+                <th id="ColumnView" scope="col" role="columnheader">Lab Order</th>
               </tr>
             </thead>
             <tbody role="rowgroup">
@@ -81,6 +82,9 @@
                   </td>
                   <td headers="RowOrder ColumnTotal" role="cell" data-label="{{ 'customer.orders.total' | t }}">
                     {{ order.total_net_amount | money_with_currency }}
+                  </td>
+                  <td>
+                    <a href="#">View</a>
                   </td>
                 </tr>
               {%- endfor -%}
